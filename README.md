@@ -29,3 +29,7 @@ https://github.com/amyehodge/SQL
 ### Unix Lessons:
 https://github.com/darachm/shell-slides
 
+### Intro to HPC Lessons:
+
+https://srcc.stanford.edu/private/intro-hpc
+
