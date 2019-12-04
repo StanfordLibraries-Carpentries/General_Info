@@ -11,6 +11,7 @@ https://docs.google.com/forms/d/e/1FAIpQLSeWUINs4ExUtAMawra98AdtjYvduAHjRJfFXwvk
 ---
 
 ### Cloud Computing Lessons:
+https://github.com/zpainter/CloudComputingServices
 
 ### Git Lessons:
 
@@ -22,7 +23,6 @@ https://gist.github.com/JoaoRodrigues/915b3deccc1d481ec541cf2a8ee8fe35
 
 ### R Lessons:
 https://github.com/fdavenport/r-geospatial-102219
-
 https://github.com/mesako/R-Lessons
 
 ### SQL Lessons:
@@ -32,6 +32,5 @@ https://github.com/amyehodge/SQL
 https://github.com/darachm/shell-slides
 
 ### Intro to HPC Lessons:
-
 https://srcc.stanford.edu/private/intro-hpc
 
