@@ -1,5 +1,5 @@
 # SUL_Carpentries
-The central repository for linking to materials taught by the Stanford Libraries Carpentries Program.
+The central repository for linking to materials taught by the Stanford Libraries Carpentries Program. For questions, contact Zac Painter (zwp@stanford.edu)
 
 Collaborative Notes: 
 https://bit.ly/2PLJ8Pd 
