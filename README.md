@@ -15,7 +15,7 @@ https://github.com/zpainter/CloudComputingServices
 
 ### Git Lessons:
 
-### OpenRefine Lessons
+### OpenRefine Lessons:
 
 ### Python Lessons:
 https://github.com/jakelever/swc-machine-learning-short  
