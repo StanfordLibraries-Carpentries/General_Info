@@ -1,4 +1,4 @@
-# SUL_Carpentries
+# The Carpentries @ Stanford University Libraries
 The central repository for linking to materials taught by the Stanford Libraries Carpentries Program. For questions, contact Zac Painter (zwp@stanford.edu).
 
 ### Where To Register And Find Future Events: 
