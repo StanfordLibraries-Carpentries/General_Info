@@ -1,37 +1,14 @@
 # SUL_Carpentries
 The central repository for linking to materials taught by the Stanford Libraries Carpentries Program. For questions, contact Zac Painter (zwp@stanford.edu).
 
-Collaborative Notes: 
+### Where To Register And Find Future Events: 
+https://library.stanford.edu/workshops 
+
+### Collaborative Notes: 
 https://bit.ly/2PLJ8Pd 
 
-Anonymous Class Feedback Form:
+### Anonymous Class Feedback Form:
 https://docs.google.com/forms/d/e/1FAIpQLSeWUINs4ExUtAMawra98AdtjYvduAHjRJfFXwvkI0byTp5FGA/viewform?usp=sf_link
 
 
----
-
-### Cloud Computing Lessons:
-https://github.com/zpainter/CloudComputingServices
-
-### Git Lessons:
-
-### OpenRefine Lessons:
-
-### Python Lessons:
-https://github.com/jakelever/swc-machine-learning-short  
-https://gist.github.com/JoaoRodrigues/915b3deccc1d481ec541cf2a8ee8fe35  
-https://docs.google.com/presentation/d/1QdWRun1inUnHO057lvbSFYjtuaKFjtZTUlX-OM4xoFc/edit#slide=id.p 
-
-### R Lessons:
-https://github.com/fdavenport/r-geospatial-102219  
-https://github.com/mesako/R-Lessons
-
-### SQL Lessons:
-https://github.com/amyehodge/SQL
-
-### Unix Lessons:
-https://github.com/darachm/shell-slides
-
-### Intro to HPC Lessons:
-https://srcc.stanford.edu/private/intro-hpc
 
