@@ -3,7 +3,7 @@
 Introduction To Python (Linnea Shieh)  
 https://docs.google.com/presentation/d/1QdWRun1inUnHO057lvbSFYjtuaKFjtZTUlX-OM4xoFc/edit#slide=id.p  
 
-Introduction To Python (Varun Srivastava) 
+Introduction To Python (Varun Srivastava)  
 https://drive.google.com/open?id=1QAAAUyaJMRg45hxRmaROsIYv3GMpFL7H  
  
 Beyond Basic Commands (João Rodrigues)    
