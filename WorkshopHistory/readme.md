@@ -2,7 +2,7 @@
 This page details the history of the workshop series in each iteration. 
 
 
-## Current Instructors
+## Current Instructors (Fall 2020 Series)
 
 - Frances Davenport, PhD Candidate (Earth System Science) 
 - Kim Durante, Stanford Libraries (Geographic and Scientific Metadata) 
