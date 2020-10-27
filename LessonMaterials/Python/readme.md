@@ -12,5 +12,5 @@ https://gist.github.com/JoaoRodrigues/915b3deccc1d481ec541cf2a8ee8fe35
 Machine Learning (Jake Lever)    
 https://github.com/jakelever/swc-machine-learning-short  
 
-Pandas (Kim Durante) 
+Pandas (Kim Durante)    
 https://drive.google.com/file/d/1Xz_7n3lWVle2QNjz_6p1_ETVPjkaF5tY/view
