@@ -72,7 +72,7 @@ Building off of a basic introduction to Unix and command-line tools, these cours
 This workshop is an introduction to using high-performance computing systems effectively. By the end of this three-hour workshop, learners will know how to: Connect to a cluster and write simple batch job scripts, submit and manage jobs on a cluster using a scheduler, transfer files, and use software through environment modules. Some command-line experience with navigating the filesystem (ls, and cd commands) and editing files (nano) is helpful but not necessary. 
 
 #### WORKFLOW SOFTWARE:
-Course description TBD
+Just like other research workflows, computer workflows should be reproducible.Being able to do the same analysis twice is critical for scholarship, and diverse tools and techniques exist to help you get organized, document your work, and even automate tedious steps. These also help you reduce errors and adapt your work to explore new questions. We survey and demonstrate a few tools you canuse to organize and orchestrate work at the command-line : documentation, git, Makefiles, Nextflow, and Singularity containers. Our aim is to inspire researchers to build flexible and reproducible workflows that facilitate scholarship and help adapt to new problems. Familiarity with how to run commands in a Linux/Unix/OSX terminal will be extremely helpful.
 
 #### Scripting, Looping, and Automation in Unix: 
 Following on the skills from the Intro To Unix Class, this class will introduce in further detail several useful programs within the terminal environment, such as automation, scripting, and looping. Some basic skill with a Unix environment is expected.
