@@ -1,0 +1,485 @@
+---
+title: "data-carpentry-script"
+output:
+  html_document:
+    number_sections: no
+    toc: yes
+    toc_float:
+      collapsed: no
+  pdf_document:
+    toc: yes
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction to R
+
+# The R syntax
+
+# Starting with data
+
+Download metadata file from GitHub:
+```{r}
+download.file("https://raw.githubusercontent.com/datacarpentry/R-genomics/gh-pages/data/Ecoli_metadata.csv", "data/Ecoli_metadata.csv")
+```
+
+
+# Using data in data frames
+
+Next we want to learn how to process data that we have stored in a dataframe.
+
+Important things to learn:
+
+* Extract values from a vector
+* Extract rows and columns from a dataframe
+
+## Extracting values with indexing and sequences
+
+Columns in a dataframe are vectors. Hence, we start with vectors:
+
+Make a simple vector:
+
+```{r}
+ten_letters <- c("a","b","c","d","e","f","g","h","i","j")
+```
+
+Each value in the vector has an index. In R, indices start from 0.
+
+We can extract a value by using the square brackets with an index:
+
+```{r}
+ten_letters[2]
+```
+
+To extract multiple values at once you can use:
+
+* a vector of indices
+* a sequence of indices. A regular sequence can be written by using the colon operator.
+
+```{r}
+ten_letters[c(1,7)]
+
+ten_letters[3:6]
+
+ten_letters[10:1]
+
+ten_letters[c(2, 8:10)]
+```
+
+In case you want to extract every second value, you can create a sequence of indices using the function seq().
+
+```{r}
+seq(1, 10, by = 2)
+
+seq(20, 4, by = -3)
+```
+
+### Exercise:
+
+Extract every second value from the vector ten_letters:
+
+```{r}
+ten_letters[seq(1, 10, by = 2)]
+```
+
+## Extracting values, rows, and colums from dataframes
+
+First let us load the Ecoli metadata again:
+
+```{r}
+metadata <- read.csv('data/Ecoli_metadata.csv')
+```
+
+
+Since dataframes are 2 dimensional (rows and columns), we need to provide indices for both dimensions. Hence the format is: dataframe[row_index, column_index]
+
+```{r}
+metadata[1, 2]   # 1st element in the 2nd column 
+metadata[1, 6]   # 1st element in the 6th column
+metadata[1:3, 7] # First three elements in the 7th column
+metadata[3, ]    # 3rd element for all columns
+metadata[, 7]    # Entire 7th column
+```
+
+Since columns can move in your dataset, you can also use the name of the column instead of the index:
+
+```{r}
+metadata[ , "strain"]
+metadata[ , c("strain", "clade")]
+metadata[4:7, c("strain", "clade")]
+```
+
+To extract a specific column you can also use the dollar sign operator:
+
+dataframe$column_name
+
+```{r}
+metadata$strain
+metadata$strain[2]
+```
+
+
+
+
+# Data manipulation using dplyr
+
+To make data manipulation easier, people have create the package dplyr.
+
+A package is basically a collection of functions.
+
+To use the functions inside a package you need to install the package on your computer. We do this the following way:
+
+```{r eval=FALSE, include=FALSE}
+install.packages("dplyr") ## install
+```
+
+After the package was installed, you need to load the package.
+
+Packages always need to be loaded at the beginning of a new R session:
+
+```{r}
+library("dplyr")          ## load
+```
+
+Dplyr is part of a collection of packages that can help you with data manipulation, visualization and analysis. Look at the following website:
+
+https://www.tidyverse.org/
+
+## Selecting columns and filtering rows
+
+How to use the following dplyr functions:
+
+* select()
+* filter()
+* Using pipes %>%
+* mutate()
+* group_by()
+* summarize()
+
+### Select()
+
+We can use the function select() to choose columns in a dataframe.
+
+Usage: select(.data, ...)
+
+```{r}
+select(metadata, sample, clade, cit, genome_size)
+```
+
+We can also un-select columns:
+
+```{r}
+select(metadata, -run, -genome_size)
+```
+
+### Filter()
+
+To manipulate rows we can use the function filter():
+
+```{r}
+filter(metadata, cit == "plus") #filter for rows with samples that contain citrate using mutants
+
+filter(metadata, cit != "plus") #exclude rows with samples that contain citrate using mutants
+```
+
+### Pipes
+
+You can chain functions together by using the pipe operator (%>%). This operator comes from the package called magrittr, which was installed as part of the package dplyr.
+
+```{r}
+metadata %>%
+  filter(cit == "plus") %>%
+  select(sample, generation, clade)
+```
+
+Note that you don't need to include the data source in each function now.
+
+You can assign the processed data to a new dataframe this way:
+
+```{r}
+meta_citplus <- metadata %>%
+  filter(cit == "plus") %>%
+  select(sample, generation, clade)
+
+meta_citplus
+```
+
+#### Challenge
+
+Using pipes, subset the data to include rows where the clade is ‘Cit+’. Retain columns sample, cit, and genome_size.
+
+```{r}
+metadata %>%
+  filter(clade == "Cit+") %>%
+  select(sample, cit, genome_size)
+```
+
+
+### Mutate()
+
+Use the function mutate() when you want to calculate values from existing columns and store those in a new column:
+
+```{r}
+metadata %>%
+  mutate(genome_bp = genome_size *1e6)
+```
+
+You can add the function head() using the pipe operator to view the top rows:
+
+```{r}
+metadata %>%
+  mutate(genome_bp = genome_size *1e6) %>%
+  head
+```
+
+You can remove the row countaining NA in clade the following way:
+
+```{r}
+metadata %>%
+  mutate(genome_bp = genome_size *1e6) %>%
+  filter(!is.na(clade)) %>%
+  head
+```
+
+### group_by() and summarize()
+
+Think about how you want to split your data to make a summary.
+
+The group_by() function helps you to split your data.
+
+The summarize() function helps you to create a summary of the groups:
+
+```{r}
+metadata %>%
+  group_by(cit) %>%
+  summarize(n())
+```
+
+In the summarize() function we used the function n() to count the observations. But we can also use functions like mean(), median(), min(), and max() to create summaries.
+
+Missing values such as NA will interfere with certain functions. Therefore, it is best to tell summarize functions to ignore NAs:
+
+```{r}
+metadata %>%
+  group_by(cit) %>%
+  summarize(mean_size = mean(genome_size, na.rm = TRUE))
+```
+
+Group by multiple columns:
+
+```{r paged.print=FALSE}
+metadata %>%
+  group_by(cit, clade) %>%
+  summarize(mean_size = mean(genome_size, na.rm = TRUE))
+```
+
+Remove the NA in clade:
+
+```{r}
+metadata %>%
+  group_by(cit, clade) %>%
+  summarize(mean_size = mean(genome_size, na.rm = TRUE)) %>%
+  filter(!is.na(clade))
+```
+
+Summarize multiple variables:
+
+```{r}
+metadata %>%
+  group_by(cit, clade) %>%
+  summarize(mean_size = mean(genome_size, na.rm = TRUE),
+            min_generation = min(generation))
+```
+
+You can find a dplyr cheatsheet here: https://rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf
+
+
+
+# Data Visualization
+
+To visualize the data we can use:
+
+* R base plots
+* ggplot that is part of the tidyverse
+
+## R base plots:
+
+### Scatterplot
+
+Use the function plot() to create scatterplots:
+
+```{r}
+plot(metadata$genome_size)
+```
+
+We can change the appearance of the points using the "pch"" argument:
+
+```{r}
+plot(metadata$genome_size, pch=8)
+```
+
+We can also include a title using the "main"" argument:
+
+```{r}
+plot(metadata$genome_size, pch=8, main="Scatter plot of genome sizes")
+```
+
+### Histogram
+
+If we want to get a frequency distribution of the genome sizes we can use the hist() function:
+
+```{r}
+hist(metadata$genome_size)
+
+hist(metadata$genome_size, xlab = "Genome size", main = "") #Rename the x-axis, remove title
+```
+
+### Boxplot
+
+If we want to show the genome size depending on the citrate metabolism capability we could use the boxplot() function:
+
+boxplot(y~x, data = dataframe_name)
+
+```{r}
+boxplot(genome_size ~ cit, data = metadata)
+```
+
+Improve appearance:
+
+```{r}
+boxplot(genome_size ~ cit, data = metadata,  col=c("pink","purple", "darkgrey"),
+        main="Average expression differences between celltypes", ylab="Expression")
+```
+
+
+## Advanced figures (ggplot2)
+
+The package ggplot2() was created to provide functions that help users to create figures in a layered approach with easier manipulation of appearance.
+
+First we need to install the package ggplot2():
+
+```{r eval=FALSE, include=FALSE}
+install.packages("ggplot2") #install
+```
+
+Load ggplot2() package:
+
+```{r}
+library(ggplot2)
+```
+
+You will find more information about ggplot2() here: https://ggplot2.tidyverse.org/
+
+This is the basic/minimal structure of a ggplot:
+
+ggplot(data = <dataframe_name>) +
+  <GEOM_FUNCTION>(mapping = aes(<MAPPINGS))
+  
+Similar to the R base plots, there're different GEOM_FUNCTIONS for different types of plots:
+
+* geom_point() for scatterplot
+* geom_histogram() for histograms
+* geom_boxplot() for boxplots
+
+Let's build a scatterplot from metadata in layers.
+
+First, add the data to ggplot:
+
+```{r}
+ggplot(metadata)
+```
+
+Now we need to add what type of plot we want to make. In ggplot2() the plus operator "+" is used to connect different layers. Please don't confuse with with the pipe operator %>% used previously.
+
+```{r eval=FALSE, include=FALSE}
+ggplot(metadata) +
+  geom_point()
+```
+
+Lastly, we need to add information on what data we want to show. This is done in the "aesthetics" = aes():
+
+```{r}
+ggplot(metadata) +
+  geom_point(aes(x = sample, y= genome_size))
+```
+
+Additionally to the x and y coordinates, we can add the following to the aesthetics:
+
+* color (similar to line color)
+* fill
+* linetype (lty)
+* size
+
+First let's modify:
+
+* color so it changes with generation
+* shape so it changes with citrate usage status
+* size to increase the shape size
+
+```{r}
+ggplot(metadata) +
+  geom_point(aes(x = sample, y= genome_size, color = generation, shape = cit), size = rel(3.0))
+```
+
+The lables are hard to read on the x-axis.
+
+We can change the label direction to include another layer called "theme":
+
+```{r}
+ggplot(metadata) +
+  geom_point(aes(x = sample, y= genome_size, color = generation, shape = cit), size = rel(3.0)) +
+  theme(axis.text.x = element_text(angle=45, hjust=1))
+```
+
+### Histogram:
+
+We can make a histogram by using the function geom_histogram(), instead of geom_point().
+
+```{r}
+ggplot(metadata) +
+  geom_histogram(aes(x = genome_size))
+```
+
+As you see I get a warning to adjust the binwidth. So I choose a different binwidth:
+
+```{r}
+ggplot(metadata) +
+  geom_histogram(aes(x = genome_size), binwidth=0.05)
+```
+
+### Boxplot:
+
+```{r}
+ggplot(metadata) +
+  geom_boxplot(aes(x = cit, y = genome_size, fill = cit)) +
+  ggtitle('Boxplot of genome size by citrate mutant type') +
+  xlab('citrate mutant') +
+  ylab('genome size') +
+  theme(panel.grid.major = element_line(size = .5, color = "grey"),
+          axis.text.x = element_text(angle=45, hjust=1),
+          axis.title = element_text(size = rel(1.5)),
+          axis.text = element_text(size = rel(1.25)))
+```
+
+### Save figure to pdf file
+
+```{r}
+pdf("boxplot.pdf")
+
+ggplot(metadata) +
+  geom_boxplot(aes(x = cit, y = genome_size, fill = cit)) +
+  ggtitle('Boxplot of genome size by citrate mutant type') +
+  xlab('citrate mutant') +
+  ylab('genome size') +
+  theme(panel.grid.major = element_line(size = .5, color = "grey"),
+          axis.text.x = element_text(angle=45, hjust=1),
+          axis.title = element_text(size = rel(1.5)),
+          axis.text = element_text(size = rel(1.25)))
+
+dev.off()
+```
+
