@@ -15,5 +15,5 @@ https://github.com/jakelever/swc-machine-learning-short
 Pandas (Kim Durante)    
 https://drive.google.com/file/d/1Xz_7n3lWVle2QNjz_6p1_ETVPjkaF5tY/view
 
-Data Science (Tim Machado)
+Data Science (Tim Machado) 
 https://www.dropbox.com/s/1lll3wb9hg6x7wg/image-processing-data.zip?dl=0
