@@ -1,0 +1,333 @@
+---
+title: "Intro R workshop"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is just text. I am not writing code yet.  
+
+```{r}
+1 + 100
+```
+
+More math in R. Uses order of operations. 
+
+```{r}
+3 + 5 * 2
+
+(3 + 5) * 2
+
+
+3 + 5 * (2 ^ 2) # ^ means to the power of
+```
+
+```{r}
+2 / 10000
+
+5e3
+```
+
+Built in math functions:
+
+```{r}
+sin(1) # trig function 
+
+log(1) 
+
+?log
+```
+
+Make comparisons in R. 
+
+```{r}
+#Equality 
+
+1 == 1
+
+#inequality  
+
+1 != 2 #1 is not equal to 2
+
+#less than/greater than
+
+1 < 2 
+
+2 > 3
+
+2 >= 3
+```
+
+Assigning variables  
+
+```{r}
+x <- 1/40
+
+x
+
+log(x)
+
+x <- 100
+
+y <- x * 2
+```
+
+R is vectorized 
+
+```{r}
+a <- 1:5
+
+a * 2
+```
+
+List environment
+
+```{r}
+ls()
+```
+
+Installing packages  
+
+```{r}
+install.packages("ggplot2")
+
+library(ggplot2)
+```
+
+Challenge 
+
+```{r}
+mass <- 47.5
+
+age <- 122 
+
+mass <- mass * 2.3  
+
+age <- age - 20 
+
+
+
+a <- 4
+rm(a)
+
+```
+
+Write code to ask if mass is larger than age. 
+
+```{r}
+mass > age
+```
+
+Data structures.  
+
+```{r}
+cats <- data.frame(coat= c("calico", "black", "tabby"), 
+                   weight= c(2.1, 5.0, 3.2),
+                   likes_string=c(1, 0, 1))
+```
+
+Write cat data to computer  
+
+```{r}
+write.csv(x=cats, file = "data/feline-data.csv", row.names=FALSE)
+
+cats <- read.csv(file="data/feline-data.csv")
+
+cats
+```
+Exploring data  
+
+```{r}
+str(cats)
+
+cats$coat
+
+cats$weight + 2
+```
+
+```{r}
+paste("My cat is", cats$coat)
+
+#cats$weight + cats$coat
+```
+
+Data types  
+
+double, integer, complex, logical, character  
+
+```{r}
+str(cats)
+
+typeof(cats$weight)
+
+typeof(TRUE)
+```
+
+Learning about vectors by adding a column.  
+
+```{r}
+#vector of integers 
+
+age <- c(2 , 3, 5)
+
+#combine data frame with our new column we used cbind()
+
+cbind(cats, age)
+
+
+```
+
+```{r}
+#age <- c(2, 3, 4, 5)
+
+#cbind(cats,age) wrong number of rows 
+```
+```{r}
+dim(cats)
+
+nrow(cats)
+
+length(age)
+
+nrow(cats)==length(age)
+```
+
+New column in data. 
+human_age is cats$age multiplied by 7 
+
+```{r}
+
+cats <- cbind(cats, age)
+human_age <- cats$age * 7
+
+cats <- cbind(cats, human_age)
+cats
+```
+```{r}
+download.file("https://raw.githubusercontent.com/swcarpentry/r-novice-gapminder/gh-pages/_episodes_rmd/data/gapminder_data.csv", destfile = "data/gapminder_data.csv")
+
+gapminder <- read.csv("data/gapminder_data.csv", stringsAsFactors = TRUE)
+```
+
+Explore the data:  
+
+```{r}
+str(gapminder)
+
+summary(gapminder$country)
+
+summary(gapminder$gdpPercap)
+```
+
+
+Making ggplots  
+
+```{r}
+library(ggplot2)
+
+ggplot(data=gapminder, mapping=aes(x=gdpPercap,y=lifeExp)) + geom_point()
+
+#modify the plot to make a scatter plot how life expectancy has change over time (year)
+
+ggplot(data=gapminder, mapping=aes(x=year, y=lifeExp)) +geom_point()
+```
+Map a variable to a color  
+
+```{r}
+ggplot(data=gapminder, mapping=aes(x=year, y=lifeExp, color=continent)) + geom_point()
+```
+```{r}
+ggplot(data=gapminder, mapping=aes(x=year, y=lifeExp, by=country, color=continent)) + geom_line()
+```
+
+```{r}
+ggplot(data=gapminder, mapping=aes(x=year, y=lifeExp, by=country, color=continent)) +
+  geom_line()+
+  geom_point()
+```
+
+```{r}
+ggplot(data=gapminder, mapping=aes(x=gdpPercap, y=lifeExp)) + geom_point(alpha=.5) + scale_x_log10()
+```
+Add a linear model relationship 
+
+```{r}
+plot_test<-ggplot(data=gapminder, mapping=aes(x=gdpPercap, y=lifeExp)) + geom_point(alpha=0.5) + scale_x_log10() + geom_smooth(method="lm", color="red", size=2)
+
+plot_test
+```
+
+GGplot challenge 
+
+remake the plot above. Change the color of the points to orange. make the points size of 3. change the LM line to 1.5 size.  
+
+```{r}
+ggplot(data=gapminder, mapping=aes(x=gdpPercap, y=lifeExp)) + geom_point(alpha=0.5, color="orange", size=3) + scale_x_log10() + geom_smooth(method="lm", color="red", size=1.5) + labs(title="Life expectancy by gdp", x="GDP per capita", y="Life Exprectancy")
+```
+```{r}
+ggplot(data=gapminder, mapping=aes(x=gdpPercap, y=lifeExp, color=continent)) + geom_point(alpha=.5) + scale_x_log10() +geom_smooth(method="lm", size=1.5)
+```
+Facet wrap plots by continent  
+
+```{r}
+life_ex_plot=ggplot(data=gapminder, mapping=aes(x=year, y=lifeExp)) + 
+  geom_point() +
+  facet_wrap( ~ continent) +
+  theme(axis.text.x=element_text(angle=45))
+
+life_ex_plot
+```
+
+Save our ggplot
+
+```{r}
+ggsave(filename="lifeExp.png", plot=life_ex_plot, width=12, height=10, dpi= 300, units="cm")
+```
+
+
+GGPlot challenge 2: 
+ plot lifeexp (y) by the continent on the X, colored by continent. Make boxplots. facet by year. 
+ 
+```{r}
+ggplot(data=gapminder, mapping=aes(x=continent, y=lifeExp, fill=continent)) +
+  geom_boxplot()+ facet_wrap(~year) + theme(axis.title.x=element_blank(), axis.text.x = element_blank(), axis.ticks.x=element_blank(), legend.position = "bottom")
+```
+Manipulate gapminder data with dplyr.  
+
+```{r}
+#install.packages("dplyr")
+#library("dplyr")
+
+install.packages("tidyverse")
+library(tidyverse)
+
+#install.packages("rlang")
+
+```
+
+Select columns with dplyr  
+
+```{r}
+year_country_gdp <- gapminder %>% select(year, country, gdpPercap)
+
+str(year_country_gdp)
+```
+
+Filter rows with filter. 
+
+```{r}
+year_country_gdp_euro <- gapminder %>% 
+  filter(continent=="Europe") %>%
+  select(year, country, gdpPercap)
+
+str(year_country_gdp_euro)
+```
+
+Table summarizing mean gdp per cap, by country  
+
+```{r}
+gdp_bycont <- gapminder %>% group_by(continent) %>% summarize(mean_gdpPerCap=mean(gdpPercap))
+```
+
