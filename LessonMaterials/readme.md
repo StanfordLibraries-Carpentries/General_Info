@@ -1,6 +1,6 @@
 # Workshop Listings
 
-This page details the history of the workshop series in each iteration. Courses taught in Fall 2020 marked in ALL CAPS.
+This page details the history of the workshop series in each iteration. Courses taught in Winter 2021 marked in ALL CAPS.
 
 
 
@@ -39,7 +39,7 @@ The cloud is an integral part of modern computing. It is a fancy name for the hu
 ## Intermediate Python workshops
 Building off of a basic introduction to Python, these courses go beyond into specific concepts.
 
-#### INTERMEDIATE PYTHON - DATA SCIENCE: 
+#### Intermediate Python - Data Science: 
 Does your research generate lots of images that you need to quantify by hand? Maybe you're counting the number of bacterial colonies on a plate, or the number of stars in the sky. Do you wish you knew how to write code to do this sort of task automatically? In this short course, participants will learn to use Python, NumPy, and scikit-image to solve problems like these. 
 
 #### INTERMEDIATE PYTHON - MACHINE LEARNING: 
@@ -55,23 +55,26 @@ Python is a general-purpose programming language used in different fields of res
 ## Intermediate R workshops
 Building off of a basic introduction to R, these courses go beyond into specific concepts.
 
-#### INTERMEDIATE R - GEOSPATIAL APPLICATIONS: 
+#### Intermediate R - Geospatial Applications: 
 Now that you have learned the basics of R, it's time to take advantage of several of the useful libraries within the software. This workshop, located in the same facility as the Stanford Geospatial Center (who would love to see you for their workshops too!) will introduce you to geospatial libraries and concepts using R. Prior experience using R at an introductory level is expected.
 
 #### INTERMEDIATE R - VISUALIZATION WITH GGPLOT2: 
 Now that you have learned the basics of R, it's time to take advantage of several of the useful libraries within the software. This workshop will introduce you to ggplot2, the most famous visualization package in R, and a forerunner to the complete tidyverse library suite. You will learn how to take advantage of one of the most well-regarded features of R when compared to other statistical software packages; its ability to create great visualizations from your data. Prior experience using R at an introductory level is expected.
 
-#### INTERMEDIATE R - STATISTICS AND DATA ANALYSIS: 
-In this workshop we will cover factors, Aggregating and analyzing data with dplyr, the Pearson correlation, a student's t-test, ANOVA, and the Tukey HSD.
+#### Intermediate R - Statistics and Data Analysis: 
+In this workshop we will cover factors, Aggregating and analyzing data with dplyr, the Pearson correlation, a student's t-test, ANOVA, and the Tukey HSD.   
+
+#### INTERMEDIATE R - SIMPLE STATISTICS AND ADVANCED DATA VISUALIZATION 
+In this short course, we will learn 1. how to perform simple stats in R and plot your data in a publication-ready format using ggpubr package and 2. multidimensional data reduction and visualization techniques including PCA, UMAP, and heatmaps.
 
 
 ## Workshops requiring beginner command-line (Unix/terminal) skills
 Building off of a basic introduction to Unix and command-line tools, these courses go beyond into specific concepts.
 
-#### INTRODUCTION TO HIGH PERFORMANCE COMPUTING: 
+#### Introduction to High Performance Computing: 
 This workshop is an introduction to using high-performance computing systems effectively. By the end of this three-hour workshop, learners will know how to: Connect to a cluster and write simple batch job scripts, submit and manage jobs on a cluster using a scheduler, transfer files, and use software through environment modules. Some command-line experience with navigating the filesystem (ls, and cd commands) and editing files (nano) is helpful but not necessary. 
 
-#### WORKFLOW SOFTWARE:
+#### Workflow Software:
 Just like other research workflows, computer workflows should be reproducible.Being able to do the same analysis twice is critical for scholarship, and diverse tools and techniques exist to help you get organized, document your work, and even automate tedious steps. These also help you reduce errors and adapt your work to explore new questions. We survey and demonstrate a few tools you canuse to organize and orchestrate work at the command-line : documentation, git, Makefiles, Nextflow, and Singularity containers. Our aim is to inspire researchers to build flexible and reproducible workflows that facilitate scholarship and help adapt to new problems. Familiarity with how to run commands in a Linux/Unix/OSX terminal will be extremely helpful.
 
 #### Scripting, Looping, and Automation in Unix: 
