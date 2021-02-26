@@ -22,7 +22,7 @@ This page details the history of the workshop series in each iteration.
 - Dr. Amy Hodge, Stanford Libraries (Science Data) 
 - Dr. Lori Ling, Postdoctoral Researcher (Genetics) 
 - Dr. Timothy Machado, Postdoctoral Researcher (Bioengineering) 
-- Peter Mangiafico, Stanford Libraries (Product Manager and Software Enginner) 
+- Peter Mangiafico, Stanford Libraries (Product Manager and Software Engineer) 
 - Dr. Darach Miller, Postdoctoral Researcher (Genetics) 
 - Mary-Ellen Petrich, Digital Preservation Analyst (LOCKSS) 
 - Mark Piercy, Stanford Research Computing Center (Technical Liaison) 
