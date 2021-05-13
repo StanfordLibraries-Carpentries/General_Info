@@ -29,8 +29,8 @@ This page details the history of the workshop series in each iteration.
 - [Dr. Chris Roat](https://github.com/chrisroat), Software Developer (Experimental Physics, School of Medicine) 
 - [Dr. João Rodrigues](https://github.com/JoaoRodrigues), Postdoctoral Researcher (Structural Biology) 
 - [Dr. Alex Scharr](https://github.com/scharr), Scientific Researcher (Otolaryngology) 
-- Dr. Johannes Scharwies, Postdoctoral Researcher (Biology) 
+- [Dr. Johannes Scharwies](https://github.com/JDScharwies), Postdoctoral Researcher (Biology) 
 - [Linnea Shieh](https://github.com/nayleeoid), Stanford Libraries (Engineering) 
-- Varun Srivastava, Masters Candidate (Electrical Engineering) 
+- [Varun Srivastava](https://github.com/VarunSrivastavaIITD), Masters Candidate (Electrical Engineering) 
 - Irina Trapido, Stanford Libraries (Electronic Resources)   
   
