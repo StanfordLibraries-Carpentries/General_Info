@@ -33,4 +33,5 @@ This page details the history of the workshop series in each iteration.
 - [Linnea Shieh](https://github.com/nayleeoid), Stanford Libraries (Engineering) 
 - [Varun Srivastava](https://github.com/VarunSrivastavaIITD), Masters Candidate (Electrical Engineering) 
 - Irina Trapido, Stanford Libraries (Electronic Resources)   
+- [Dr. Menglan Xiang](https://github.com/mxiang1), Postdoctoral Researcher (Pathology)
   
