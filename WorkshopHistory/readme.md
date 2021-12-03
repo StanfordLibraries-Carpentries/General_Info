@@ -25,6 +25,7 @@ This page details the history of the workshop series in each iteration.
 - [Dr. Briana Mittleman](https://github.com/brimittleman), Juris Doctor Candidate (Genetics, Genomics, Systems Biology)   
 - [Dr. Evan Muzzall](https://github.com/EastBayEv), Unit Head (Software and Services for Data Science)
 - [Zac Painter](https://github.com/zpainter), Stanford Libraries (Engineering) 
+- Dr. Alma Parada, Stanford Libraries (Earth and Environmental Sciences)  
 - [Mary-Ellen Petrich](https://github.com/Mellen22), Digital Preservation Analyst (LOCKSS) 
 - [Mark Piercy](https://github.com/mpiercy), Stanford Research Computing Center (Technical Liaison) 
 - [Kalani Ratnasiri](https://github.com/kalanir), PhD Candidate (Immunology) 
