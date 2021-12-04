@@ -15,6 +15,7 @@ This page details the history of the workshop series in each iteration.
 - [Dr. Claudia Engel](https://github.com/cengel), Academic Technology Specialist (Anthropology) 
 - [Dr. Amy Hodge](https://github.com/amyehodge), Stanford Libraries (Science Data)
 - [Dr. Melissa Ko](https://github.com/mesako), Science and Engineering Education Fellow (Bioengineering)
+- [Karl Kornel](https://github.com/akkornel), Stanford Research Computing Center (HPC Systems Administrator)  
 - [Dr. Binglan Li](https://github.com/BinglanLi), Postdoctoral Researcher (Biomedical Data Sciences)   
 - [Dr. Jake Lever](https://github.com/jakelever), Postdoctoral Researcher (Bioengineering) 
 - [Dr. Lori Ling](https://github.com/loriling96), Postdoctoral Researcher (Genetics)
@@ -38,4 +39,5 @@ This page details the history of the workshop series in each iteration.
 - [Varun Srivastava](https://github.com/VarunSrivastavaIITD), Masters Candidate (Electrical Engineering) 
 - Irina Trapido, Stanford Libraries (Electronic Resources)   
 - [Dr. Menglan Xiang](https://github.com/mxiang1), Postdoctoral Researcher (Pathology)
+- [Zhiyong Zhang](https://github.com/zyzhang1992), Stanford Research Computing Center (Research Software Developer)
   
