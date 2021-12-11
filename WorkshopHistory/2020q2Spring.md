@@ -1,5 +1,9 @@
 # 2020 Spring Series
 
+## Events
+Beginning R
+Introduction To High Performance Computing
+
 ### Instructors
 
 Dr. Claudia Engel, Academic Technology Specialist (Anthropology)
