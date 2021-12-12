@@ -1,5 +1,14 @@
 # 2021 Winter Series
 
+## Events   
+Python Introduction   
+R Introduction   
+Python Pandas   
+Python Machine Learning   
+R Visualization   
+R Simple stats and advanced data visualization   
+Unix And Git/GitHub   
+
 ### Instructors
 
 Kim Durante, Librarian (Science Metadata)  
