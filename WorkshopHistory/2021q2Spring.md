@@ -1,5 +1,11 @@
 # 2021 Fall Series
 
+## Events   
+Unix Introduction   
+Python Introduction   
+R Visualization   
+Python Images and Data Science   
+
 ### Instructors
 
 Dr. Melissa Ko, Science and Engineering Education Fellow (Bioengineering)  
