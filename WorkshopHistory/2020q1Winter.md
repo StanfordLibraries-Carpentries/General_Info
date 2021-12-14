@@ -8,7 +8,7 @@ Introduction To R
 Version Control With Git   
 Intermediate Python: Pandas   
 Introduction To Unix/Terminal   
-Intermediate R: TBD   
+Intermediate R      
 Make And Automation   
 Intermediate R: Visualization With ggplot2   
 Introduction To Unix/Terminal   
