@@ -1,4 +1,10 @@
-# 2021 Fall Series
+# 2021 Spring Series
+
+## Events   
+Unix Introduction   
+Python Introduction   
+R Visualization   
+Python Images and Data Science   
 
 ### Instructors
 
