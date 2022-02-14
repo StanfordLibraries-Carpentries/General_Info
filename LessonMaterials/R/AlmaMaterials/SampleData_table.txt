@@ -1,0 +1,11 @@
+	Location	Depth
+Sample1	B	629
+Sample2	D	668
+Sample3	C	161
+Sample4	D	987
+Sample5	C	667
+Sample6	B	611
+Sample7	B	515
+Sample8	C	907
+Sample9	D	720
+Sample10	A	857

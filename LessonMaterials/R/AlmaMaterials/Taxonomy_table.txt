@@ -1,0 +1,11 @@
+Domain	Phylum	Class	Order	Family	Genus	Species
+OTU1	r	p	n	g	v	u	b
+OTU2	q	c	h	k	b	o	g
+OTU3	h	g	k	f	w	i	n
+OTU4	n	n	n	m	t	o	k
+OTU5	i	e	o	k	t	h	u
+OTU6	j	r	o	o	g	z	f
+OTU7	u	a	r	j	n	u	j
+OTU8	a	z	o	r	n	k	y
+OTU9	n	z	f	x	z	u	t
+OTU10	g	b	x	h	z	c	s
