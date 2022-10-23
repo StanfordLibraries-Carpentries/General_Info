@@ -2,10 +2,13 @@
 This page details the history of the workshop series in each iteration. 
 
 
-## Current Instructors (Winter 2022 Series)
+## Current Instructors (Fall 2022 Series)
 
-- TBD
-
+- [Mika Braginsky](https://github.com/mikabr), Postdoctoral Researcher (Pediatrics)
+- [Viraj Manwadkar](https://github.com/kibokov), PhD Candidate (Physics)
+- [Zac Painter](https://github.com/zpainter), Stanford Libraries (Engineering) 
+- Dr. Alma Parada, Stanford Libraries (Earth and Environmental Sciences)  
+- [Kalani Ratnasiri](https://github.com/kalanir), PhD Candidate (Immunology) 
 
 
 ## Past Instructors
@@ -25,11 +28,8 @@ This page details the history of the workshop series in each iteration.
 - [Dr. Darach Miller](https://github.com/darachm), Postdoctoral Researcher (Genetics) 
 - [Dr. Briana Mittleman](https://github.com/brimittleman), Juris Doctor Candidate (Genetics, Genomics, Systems Biology)   
 - [Dr. Evan Muzzall](https://github.com/EastBayEv), Unit Head (Software and Services for Data Science)
-- [Zac Painter](https://github.com/zpainter), Stanford Libraries (Engineering) 
-- Dr. Alma Parada, Stanford Libraries (Earth and Environmental Sciences)  
 - [Mary-Ellen Petrich](https://github.com/Mellen22), Digital Preservation Analyst (LOCKSS) 
 - [Mark Piercy](https://github.com/mpiercy), Stanford Research Computing Center (Technical Liaison) 
-- [Kalani Ratnasiri](https://github.com/kalanir), PhD Candidate (Immunology) 
 - [Dr. Chris Roat](https://github.com/chrisroat), Software Developer (Experimental Physics, School of Medicine) 
 - [Dr. João Rodrigues](https://github.com/JoaoRodrigues), Postdoctoral Researcher (Structural Biology)
 - Dr. Andrea Scaiewicz, Research Associate (Structural Biology) 
