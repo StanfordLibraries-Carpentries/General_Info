@@ -1,0 +1,881 @@
+---
+title: "Carpentries R Intro: Part I"
+author: "Alma Parada"
+date: "10/25/2022"
+output:
+  pdf_document: default
+  html_document: default
+editor_options:
+  chunk_output_type: console
+---
+
+#	Code used during the Carpentries October 2022 R Introduction Workshop
+
+Download Workshop Docs: 
+
+https://drive.google.com/drive/folders/1Fd7vF2-wwpWnPwR58fM5BlHfpjKzbpK0?usp=sharing
+
+
+Comments brought up during workshop included throughout.
+  
+  - Use # to make comments
+
+# Using R and RStudio
+
+  1) Show Terminal -> Start R
+
+      - This is how you can set up an R script to run on an HPC 
+
+  2) Show Console -> Start R GUI , go through buttons
+
+  3) Core Stanford community -> https://login.sherlock.stanford.edu/pun/sys/dashboard
+
+      - Applications -> RStudio Server -> accept defaults > Launch
+
+  4) Course work, unsponsored research ->
+    https://web.stanford.edu/group/farmshare/cgi-bin/wiki/index.php/FarmShare_2
+
+
+# Open RStudio
+
+RStudio Layout
+
+  1) Console – is what is actually being run, the script feeds the console
+  
+      - Can do simple math #Show some examples to show the broom below
+        
+        Good for things you only want to do once
+
+  2) Broom – clears out console
+
+  3) Script (Editor) – where you can write code and save it
+  
+  4) Environment – where you data (objects) will appear and be listed
+
+  5) History – to see what you have run
+      
+      - Broom example
+
+  6) Files – shows files and gives you access to the file directory
+
+  7) Plots – shows plots and provides export options
+
+  8) Packages – list of installed R packages. check mark indicates the package is loaded
+
+  9) Help – gives a description of the function, its usage and syntax
+
+  10) Viewer – used for viewing local web content
+
+#	Getting Organized
+Projects
+
+  1) Create New -> New directory Name, Browse to find a place.
+
+  2) Now look at Files -> and see the working directory has now changed
+  
+      - This will help keep output and input for each project separate
+  
+  3) Create new folder Data & Scripts
+
+      - We can now open R from this folder, using the .Rproj file, we can also load it through the drop-down menu. This will cause Rstudio to open with this directory as the default.
+
+      - Make New script
+
+  1) File Save or floppy icon, place in scripts folder
+
+  2) Introduce buttons
+
+  3) Keyboard shortcuts: 
+  
+      - To access shortcuts, type Option + Shift + K on a Mac, or Alt + Shift + K on Linux and Windows.
+
+  4) Run – executes current line or selection (click button to see Mac/Linux/Windows keyboard shortcut)
+    #Show example math in console and in the script
+
+  5) Source – runs the whole script from top to bottom
+
+  6) Outline button – creates an outline to jump through script
+    
+      - Write a comment letting you know this is where you started, and keep updating
+      
+      #### Just Practicing----
+      
+      #	The dashes cause "Just Practicing" to become a section in the document outline
+
+
+  5) RStudio will want to import data from the previous session
+  
+      - To stop default behavior
+      
+      - Go to preferences – 
+
+      - R Sessions – unselect > Restore most recently opened project at startup
+      
+      - Workspace -> unselect “Restore .RData into workspace at startup”
+
+      - Apply (will ask to restart)
+
+
+# Install & Load Packages - Discussion
+What is a package?
+
+      - A bundle of code someone else wrote, tested, and gave away.
+
+      - Often designed to solve a specific problem.
+      
+      - May pull in functions from other packages (dependencies) or consist of a bundle of packages.
+
+        - Tidyverse – consists of at least 8 packages
+
+Where to get a package?
+
+      - There are lots of places and methods, but best to begin through the Comprehensive R Archive Network (CRAN).
+
+        - Most people wait until their package is stable (”bug free”) before submitting, so likely to have less problems
+
+      - Can also get from other places, like GitHub & BioConductor
+
+# Install & Load Packages - Hands-On
+```{r, echo=T,error =TRUE,eval=FALSE}
+#	tidyverse and readxl will be our example
+#	Only need to do once, you should do directly in console
+  #Could be useful to have separate script or commented space for scripts on what packages to load and where they were loaded from, if moving to another machine or sharing info
+  #	Packages tab – install – search for packages available in CRAN – Install
+      #Install readxl 
+library(readxl)
+
+#Using install.packages() function to install
+##Do in Console
+install.packages("tidyverse") #quotes required, time to install depends on what you have already installed
+
+
+#Loading packages
+  #	Must happen every time you are starting an R session
+  #common practice is to have a section at the top of script for listing libraries to load, or it can happen in the section you need it
+library(tidyverse) #note that you no longer need quotes
+  #Some packages may have functions with the same name
+    #To distinguish use syntax package::function()
+        #example -> dplyr::filter() versus stats::filter()'
+
+#Get help
+?tidyverse
+help(package="tidyverse")
+  #google searches, stack exchange
+?readxl
+browseVignettes("dplyr")
+#tidyverse will also install ggplot2
+#another useful package to accompany ggplot2 is patchwork
+# install.packages("devtools")
+devtools::install_github("thomasp85/patchwork")
+
+#Another useful tool, R markdown!
+# Install from CRAN
+install.packages('rmarkdown', dep = TRUE)
+
+install.packages('tinytex')
+tinytex::install_tinytex()  # install TinyTeX
+  
+```
+
+
+# Exercise 1
+```{r, echo=T,error =TRUE,eval=FALSE}
+#install package patchwork
+install.packages("patchwork")
+library(patchwork)
+?patchwork
+```
+
+
+
+# Basic Math & R Behavior
+```{r, echo=T,error =TRUE,eval=FALSE}
+1+1 # [1] indicates first line of output/result
+
+1:100 #Colon operator (:) returns every integer between two integers, good way to get a sequence
+      #Notice that the index of this sequence begins with 1 not 0 like in other languages
+
+5-
+  
+  2
+  #An incomplete commands returns a + prompt, meaning the computer is waiting for more info, you can finish it or hit escape
+
+3 -2
+3-2
+3- 2
+  #Spaces not always important, but may be a place to evaluate if errors produced
+
+5%3
+  #If you type a command R doesn’t recognize, it will give an error 
+  #notice that spaces don’t generally matter within a command
+
+```
+
+
+# Exercise 2
+```{r}
+#1 Choose a number and add 10 to it
+#2 Multiply 86 and 23
+#3 Subtract 6 from the answer in 2
+#4 Use order of operations to combine steps 2 & 3
+```
+
+
+# Objects, Functions & Operators - Discussion
+When R is running, everything is in the active memory of the computer in the form of an object that has a name
+
+      - Object = almost everything
+      
+        - Data set, variable, list, an integer, etc.
+
+      - You can perform actions on these objects
+        - Operators Arithmetic, logical, comparisons, etc.
+
+      - Functions = A program or command stored as an object
+
+	      - set of statements organizaed to performa specific task
+
+	      - factorial(new_num)
+	      
+	      - Basic syntax
+	       
+	          function_name <- function(arg1, arg2,...) {
+	                           Function Body #(the task)
+	                            }
+	          function_name()
+
+      - Operator = symbol that tells R to perform specific mathematical or logical manipulations
+      
+         - Tutorialspoint, R-operators
+https://www.tutorialspoint.com/r/r_operators.htm#
+
+
+# Objects, Functions & Operators - Hands-On
+```{r,echo=T,error =TRUE,eval=FALSE}
+
+a=1 # assign the value (or element) 1 to the new object named "a"
+a # run this alone will show you the value assigned to "a"
+
+b<-2 #notice the different ways to assign a value to an object "<-" or "="
+b 
+
+# Performing actions on the objects
+a+4 
+a+b
+  # both work because R interprets the object as its value, thus it knows a+b is the same as 1+2
+
+#Create new objects from other objects
+c <- a + b
+new_num <- (a + b) * 100
+
+#It is good practice to be consistent in naming variables
+#capitalization and spelling matters, so watch out for misspelling or variations to similar names
+Name <- 2
+name <- 3
+nme <- 6
+
+Name + 5
+name + 5
+nme + 5
+  # These give different answers
+#common methods of keeping consistent
+VarName<-10
+var_name<-10
+  #Choose how to break up informative names
+    #oxy_conc vs. var2
+
+
+
+# Aside from looking at the environment tab, you can also list all the current objects by name
+  # we do this with a function called ls
+ls() # executing this function lists all the objects
+    # the parenthesese next to the name "ls" are what tells are that we are calling a function,
+    #so ls() is the function but ls () is not
+
+# remove specific objects from your environment
+rm("nme") # give the object's name in quotations
+          #can also provide a comma separated list of object names
+ls()
+
+```
+
+
+# Exercise 3
+```{r, echo=T,error =TRUE,eval=FALSE}
+#1 Save two numbers as two separate objects
+
+#2 Add the two objects together and save it to a new object
+
+#3 Add 2 to the new object
+
+#4 Multiply all three objects together
+
+```
+
+
+# Atomic vectors - Discussion
+
+Vectors are a sequence of elements of a certain type
+
+      - Two types of Vectors
+
+        1) Atomic vectors: All elements have the same type
+        
+        2) Lists: R objects which contain elements of different types
+
+We will focus mostly on atomic vectors, but will touch on lists peripherally
+There are 6 atomic vector types, with 4 being most common
+
+      1) double (or numeric)  ->  -0.5  or 120.9 
+      2) integer -> -1L or 121L ("long" integers)
+      3) logical -> TRUE or FALSE 
+      4) character -> "R" or "5" or "thirty"
+      5) complex -> -5+11i (Real+Imaginary numbers)
+      6) raw -> 01 or ff (Raw bytes, as hexadecimal)
+
+# Atomic vectors - Hands-On
+```{r, echo=T,error =TRUE,eval=FALSE}
+#An element that contains elements of the same data type, i.e. integers, characters, etc.
+
+#Several ways to create vectors, below is a few
+x <- c(1,2,3,4,5) # create a vector with the c() function, providing a comma separated list of elements
+x
+
+y<- 1:5 # notice we are using the colon operator to create a sequence of integers from 1 to 5
+y
+
+z<-seq(1,5,by=1) # using the seq() function, arg1=first number, arg2=second number, by tells the steps to take between the first and second numbers
+  # hit tab between the parenthesis to find more options
+?seq #A ? before the function name opens the help tab where you can get more information about the function
+
+z
+z_mod<-seq(1,5,by=0.5)
+z_mod
+
+z_mod10<-nums <- seq(1,5, length = 10) #specify amount of numbers between the starting and end number
+z_mod10
+
+q<-rep(c(1,2,3),4) # rep() function will repeat the elements given, here the second argument indicates how many times to repeat it
+q
+
+r<-rep(c(1,2,3),length.out=10) 
+r #notice it cuts off the vector supplied because it will first satisfy the length you requested
+
+r<-rep(c(1,2,3),length.out=15)
+r #now it has enough length to use the entire vector five times
+  #notice how we have overwritten the object
+
+#can create a character vector using the built in object "letters"
+letters
+letters[1:4] # gives only the first 4 elements in the object letters, in this case the first 4 letters of the alphabet
+
+#When troubleshooting errors, it can help to check the vector type, since some functions require a specific vector type
+typeof(x)
+str(x) # notice this command calls the "double" vector type, "num" for "numerical"
+mixed_vect<-c(1,2,"Why?","Q")
+mixed_vect # notice that all values have quotations, this is because c() coerces all elements to be of the same type to satisfy the rules of vectors
+typeof(mixed_vect)
+str(mixed_vect)
+
+```
+
+
+# Exercise 4
+```{r, echo=T,error =TRUE,eval=FALSE}
+#1 Create an integer vector with 10 elements, and a character vector with 4 elements
+
+#2 Check the data type for each vector
+```
+
+
+# Actions on vectors & basic stats
+
+R does not follow rules of matrix multiplication 
+instead, it performs the same action on each element individually
+
+```{r, echo=T,error =TRUE,eval=FALSE}
+z<-1:5 
+#notice that assigning a new value to an object that already exists overwrites previous values automatically, no warnings given
+
+#Element-wise execution
+z-1 #one is substracted from each element individually
+z/2 # each element is divided by two
+z*z # the vecotrs are lined up next to each other and only corresponding elements are multiplied together
+
+#Basic stats
+r<-rnorm(100) # gives normal distribution consisting of 100 random elements, 
+?rnorm
+r
+mean(r) #because it's sampling a normal distribution randomly, the mean may not be exactly zero
+median(r)
+sd(r) #standard deviation, not exactly 1 due to smaller sample size
+var(r) # variance
+sqrt(var(r)) # square root of the variance of "r" another way to get the standard deviation
+range(r)
+summary(4) # basic summary statistics
+    #can also call min() and max() directly
+min(r) #if you tab in the parentheses you notice na.rm=, this allows you to remove NA's if you have missing values
+
+hist(r) #creates a simple histogram to allow you to see the distribution of your data
+        #it will show up in the Plots tab, click on Export to save as PDF or image
+          #when saving as image can choose from multiple formats and you can adjust the size before saving
+
+```
+
+
+# Exercise 5
+```{r, echo=T,error =TRUE,eval=FALSE}
+#1 Create a numerical vector of 100 elements
+
+#2 Identify 5 descriptive statistics about your data
+
+#3 Extra credit if you google search your way to other stats!
+
+#4 Save a histogram of your data in your output folder
+
+```
+
+
+# Modifying Vectors - Discussion
+
+We can select individual elements, create subsets, or modify vectors
+
+There are many ways to do this:
+
+Built-in Functions or use functions from other packages
+	
+Important thing to remember (especially for those knowledgeable of other languages) is that an R index begins with 1		
+
+# Modifying Vectors - Hands-On
+```{r, echo=T,error =TRUE,eval=FALSE}
+x<-seq(0,10,2) #notice I dropped the "by=", the function knows that the argument at this position corresponds to "by="
+x
+
+x[3] # the bracket indicate that I want to retrieve the third element from the object x
+    # it is again important to remember that indexing in R begins with 1 and not 0 like other languages
+x[c(3,6)] # retrieve the third and sixth element from x
+x[-2] # remove the 2nd element from x
+
+#Using logical arguments to modify vectors
+y<-seq(-3,3,by=1)
+y
+y[y<0] # retrieve all elements whose value is less than 0
+y<0 # this provides a logical vector indicating if each element in y satisfies the question is y<0
+y[c( TRUE , TRUE,TRUE,FALSE,FALSE,FALSE,FALSE)]# this is the same ase y[y<0]
+y[y>1] #another example
+
+#Change values of elements in a vector
+y
+y_save<-y #assign the values of y to a new object, creates a back-up of y
+y_save
+y[2]<-0 #assigns the value of 0 to the 2nd element in y
+y
+y[y<0]<-5 #assigns the value of 5 to all elements satisfying the argumen y<0
+y
+y<-y[1:4] #overwrites the entire y vector with only the first 4 elements
+y
+y_save # back-up variable is safe, in case you make a regretful modification 
+
+#Using the subset and which functions to select elements
+y_2<-subset(y_save,y_save>0) # subset() takes the object as the first argument, then a logical task as the 2nd argument
+y_2
+
+#read back in the orginal y vector and overwrite the one we messed up
+y<-y_save
+#another way of asking for elements that satisfy a criteria
+which(y>0)  # this creates a vector indicating the position of the elements that satisfy y2>0
+y_mod<-y[which(y>0)]
+y_mod
+
+#Ultimately lots of ways to modify and subset vectors. Available options depend on the type of data, the vector type being used to subset, and your question
+
+```
+
+
+# Exercise 6
+```{r, echo=T,error =TRUE,eval=FALSE}
+
+#1 Create a numerical vector of at least 30 elements, include negative numbers
+
+#2 Subset all values greater than 0 and save them as new object
+
+#3 What is the mean, median, and variance of your new object?
+```
+
+
+# VERY Brief Intro to Loops - Discussion
+
+R is great at repetitive tasks
+
+Loops enable a task that you define to be done multiple times
+
+There are several options to create your own loop
+
+Most common loop functions
+    
+    1) ”for” loop
+
+    2) Apply family of functions – “lapply” or “sapply”	
+    
+  https://intro2r.com/loops.html#if-not-loops-then-what
+    
+# VERY Brief Intro to Loops - Hands-On
+```{r, echo=T,error =TRUE,eval=FALSE}
+
+#R is great at repetitive tasks
+#Loops enable a task that you define to be done multiple times
+
+#for loops are quite popular
+for (i in 1:5) {
+  a = (1 + i)/10
+  print(a)
+  #print((1 + i)/10) #Same result as above, could comment out above two lines
+  }
+#Here we want each integer from 1 to 5 to be transformed in the same way
+#could also simplify
+for (i in 1:5) {
+ print((1 + i)/10) #Same result as above, could comment out above two lines
+  }
+
+#Can make new vectors from the results of a for loop
+b<-0 
+for (i in 1:5) {
+  b[i]<-(1+i)/10
+}
+print(b)
+#Here we created a new element for each position in the new vector, whose length is defined by the number of iterations we defined (with 1:5)
+
+c<-0
+for(i in 1:length(b)){
+  c[i]<- log10(b[i]/2 * 100)
+}
+c
+#we can also iterate through each element in a vector, by indexing, performing a task and then saving the new value to a new position in a new object
+
+
+#Built in loop functions also exist that can be faster and are less prone to error
+  #lapply(X, FUN) #outputs a list
+  #sapply(X, FUN) #outputs a sequence (vector)
+    #X is the vector we want to do something to
+    #FUN stands for function or the task you defined
+
+lapply(1:5,function (i) {(1 + i)/10})
+
+sapply(1:5,function (i) {(1 + i)/10})
+
+#Can also define the task (function) separately from the iteration
+new_func<- function (i) {(1 + i)/10}
+sapply(1:5, new_func)
+
+#comparison, to show a good way to save a function you'll use often
+log_func<- function (b) {log10(b/2 * 100)}
+d<-sapply(b, log_func)
+d
+#compare to 
+c
+
+```
+
+
+# Matrix - Discussion
+
+A matrixis a two-dimensional data structure. 
+
+All the elements of a matrix must be of the same type (numeric, logical, character, complex). 
+
+Many of the functions we used to modify and manipulate a vector are similarly used to work with a matrix.
+
+Now we just need to account for the rows and columns
+
+#Creating a Matrix
+```{r, echo=T,error =TRUE,eval=FALSE}
+#Create a matrix with matrix() 
+matrix(1:12,nrow=4) #function matrix let's you create a matrix
+      # nrow=4, indicates that you want a matrix that has 4 rows
+      #byrow=5 causes the values of 1:12 to be distributed to the 4 rows in a column before moving on to the next column
+matrix(1:12,nrow=4,byrow=T) # note the difference
+
+#note the column and row names, the numbers to the left of the column correspond to rows, while numbers to the right correspond to columns,
+#R typically refers to matrices in this order, rows then columns
+x<-matrix(1:12,nrow=4,byrow=T) #going to reuse below
+dim(x) #this gives you the dimensions of matrix x, answer given as number of rows then columns
+
+#Create a matrix from two vectors
+a<-1:10
+b<-2:11
+cbind(a,b) # takes two vectors of equal length and combines them as columns
+          # note the column names
+rbind(a,b) # combines vectors as rows
+
+# All elements of a matrix must be the same type, of they are not it is forced
+d<-cbind(a,b)
+e<-letters[1:10]
+f<-cbind(a,e)
+
+is.matrix(d)
+is.matrix(f)
+f # note that all values are converted to characters, even the numbers from a
+
+#Appending vectors to matrices
+g<-3:12
+cbind(d,g) #adds g as a third column 
+
+h<-1:5
+cbind(d,h)#vector recycling in a matrix 
+#Given two vectors of unequal lengths, R will repeat the shorter vector until it is as long as the longer vector
+
+rbind(d,g) #note the error occurring because g has to many elements to be added as a row
+#If the shorter vector does not divide evenly into the length of the long vector, R will return an error
+
+rbind(d,c(30,40)) # this does  work
+```
+
+
+# Subsetting matrices
+```{r, echo=T,error =TRUE,eval=FALSE}
+x #same variable as above
+x[3,2] #similar to subsetting a vector, just need to account for both dimensions
+      #so now we ask for the element in the third row of the second column
+x[1:3,c(1,3)] # asking for the elements in the first three rows of columns 1 and 3
+              # note how the original third column is now the second column
+x[1:3,c(3,1)] # the order in the combine function matters
+x[,c(1,3)] #leaving the row argument empty, returns all rows for the specified columns
+
+x[3,] #leaving the column argument empty, returns all values for row 3
+      #note that the result is now a single vector
+x[3,,drop=F] #using the drop=F argument forces the single row to retain the matrix format
+x[,2]#single vector of all values in column 2
+x[,2,drop=F] #keep matrix structure
+
+x[x[,2] >5,]# can use logical arguments, 
+            #this returns all rows for which the values in column 2 are a greater than 5
+
+t(x) # if needed can transpose the matrix, similar to switching rows and columns in R or pasting with transpose
+
+```
+
+
+# Element-wise execution with matrices
+```{r, echo=T,error =TRUE,eval=FALSE}
+x #same variable as above
+x*2 #each individual value is multiplied by 2
+x*10/2 #follows regular order of operations
+(x*10)/2
+sqrt(x)
+log(x)
+
+y<-matrix(2:13,nrow=4,byrow=T)
+x
+y
+x*y #element-wise execution, where the command is carried out between the elements in the same row and column
+
+```
+
+
+# Exercise 7
+```{r, echo=T,error =TRUE,eval=FALSE}
+
+#1 Create a numerical matrix object with 5 columns and 6 rows
+
+#2 Name the columns and rows
+
+#3 Find the mean value for your 3rd column
+
+```
+
+
+# Data frame
+
+A data frame combines features of matrices and lists.
+
+Basically, a rectangular list where each item has the same length
+
+    1) The items are the columns of the data frame
+
+    2) Each column must be the same type
+
+    3) Different columns can be different types
+
+```{r, echo=T,error =TRUE,eval=FALSE}
+#Let's create some example data, where we measured the weight of 10 individuals who were either in a control or iron added treatment group
+weight<-c(0,seq(1,5,by=0.5)) #I want a vector from 0 to 5 with 1 to 5 at increments of 0.5, to represent the weights of the 10 individuals
+weight
+treatment<-rep(c("ctrl","iron"),length.out=10)#create a vector representing the treatment group of each individual in weight (remember that order matters!)
+
+#notice that each vector is a different type
+typeof(weight)
+typeof(treatment)
+
+#When we combined two types of vectors with matrix() they all became character type
+exp<-data.frame(weight,treatment) #use data.frame() to create a data frame of our two vectors
+exp
+
+str(exp) #note that each variable is still it's original type
+typeof(exp) # it is also now considered a list since it combines data types
+
+#rename rows to something informative
+sample_names<-c("s01","s02","s03","s04","s05","s06","s07","s08","s09","s10")
+rownames(exp)<-sample_names
+exp
+
+#Subsetting is similar to that of matrix, except now you need to account for the different vector types
+exp$weight #can use the $ to pick out a named column from the data frame as a vector
+exp$iron<-rep(1:2,length.out=10) # create new vector giving the iron levels received per treatment, and use the $ to add a new column containing that data
+exp
+
+subset(exp,weight >1)# can use a logical vector to subset by values of a specific column
+subset(exp,treatment=="ctrl")# can use the logical argument of == (is equal to), to choose only the treatment categories that are equal to the specified treatment name
+
+#Can combine data sets 
+color<-c("green","yellow","green","yellow","green","yellow","green","yellow","green","yellow")
+root_wt<-c(1.8,3.7,1.9,3.8,1.7,3.6,1.6,3.8,1.8,3.8)
+samp_names2<-c("s01","s02","s03","s04","s05","s06","s07","s08","s09","s10")
+exp_2<-data.frame(color,root_wt,row.names = samp_names2)
+exp_2
+
+exp_data<-merge(exp,exp_2,by = "row.names")
+str(exp_data)
+typeof(exp_data)
+  #note merge converts the data to a data frame, but a data frame is still just a list of different vectors with their own data type
+?merge()
+  #combine dataframes, here we are assuming the row.names are the same and that is how we are combining them, you could combining using specific columns
+exp_data
+
+```
+
+
+# Exercise 8
+```{r, echo=T,error =TRUE,eval=FALSE}
+
+#1 Create a 3 column by 5 row data frame, including a grouping variable
+
+#2 Name the columns and rows
+
+#3 Add a new column of data and create two new objects based on your grouping
+
+#4 Perform a two way anova on the porewater data
+
+```
+
+
+# Loading and Exporting Data
+Lots of places to get Data
+  
+    1) Import built in data
+    
+      - Often used in tutorials
+
+    2) Import local data
+    
+    3) Import from websites
+
+R can handl lots of file types
+
+    1) Import tab-delimited (.txt), comma-separated (.csv) and many more!
+
+    2) Some file types may require installing new packages
+    
+    3) Can import files such as .txt or HTML
+
+Exporting data
+
+    - Built in functions can help you export datasets and generated results
+
+    - Installed packages can often help in making some output easier to export
+
+
+```{r, echo=T,error =TRUE,eval=FALSE}
+
+#Loading built-in data sets
+data() # opens a new tab that provides descriptions for each data set
+data(mtcars) # loads the specified dataset as a new object by the same name
+?mtcars #provides more information on the mtcars data set in the "Help" tab
+
+is.data.frame(mtcars) #checks if mtcars is a dataframe
+is.matrix(mtcars) #checks if mtcars is a matrix, returns false because all of the elements in a matrix must be the same type
+str(mtcars) #tells you it is a data.frame,  how many observations (rows) and variables (columns) it consists of, the type of vector each variable is and the first 10 elements of each variable
+
+#taking a look at our datafame, works for any dataframe
+head(mtcars) # the function head() gives just the first few rows of the data set
+head(mtcars,8) #indicates you want to see the first 8 rows of the dataframe
+
+
+#Export a data set, either built-in, one you created or one that was imported
+write.table(mtcars,file="/path/to/where/you/want/file_name.txt",
+                  quote=F,sep="\t",row.names = T,col.names=T)
+  #export the mtcars data set (argument_1)
+  #indicate the file name and path to the folder if not in the default project folder, requires quotes around the file name and path, also should indicate the file type (.txt)
+  #quote=F indicates to not place quotes around character elements
+  #sep="\t" indicates that you want a tab-delimited file (.txt)
+  #row.names=T means that you want the first column in the new file to be the row names that you have already assigned
+  #col.names=T uses the column names assigned as the first row of the resulting file
+  #Try opening the new file in a text viewer and excel
+
+
+#Load data from a folder, we can use the example data provided in the R Intro google drive folder
+    #sim_data.xlsx - simulated data of 100 samples of seawater chemistry from 4 marine stations
+
+sea_chem<-read.table("sim_data.csv",header=T,sep=",",na.strings="NA",row.names=1)
+    #read.table() loads the data set provided in the file specified in the first argument, just as in exporting you can specify the folder path if it is not in the current directory)
+    #header=T indicates that the first row contains the column names
+    #sep="," indicates how the data is delimited
+    #na.strings="NA" indicates what value is given to missing data, do not use an empty cell in excel or other spreadsheet to indicate missing data, always fill it in with a consistent variable such as NA or na or NaN
+sea_chem
+
+#Can use the built in Import Dataset option
+##File -> Import Dataset -> Dropdown menu
+
+#Can use the readxl package to directly read in excel worksheets
+library(readxl)
+samp_data<-read_xlsx("sim_data.xlsx","samples")
+head(samp_data)
+
+```
+
+
+# Merging datasets and basic statistics
+```{r, echo=T,error =TRUE,eval=FALSE}
+#Get simple summary or descrtiptive statistics
+summary(sea_chem)
+min(sea_chem$NH4_nanoM)
+
+# get means for variables in data frame mydata
+# excluding missing values
+sapply(sea_chem, mean, na.rm=TRUE)
+
+# Tukey min,lower-hinge, median,upper-hinge,max
+fivenum(sea_chem$NH4_nanoM)
+sapply(sea_chem,fivenum,na.rm=TRUE)
+
+
+#Can combine the datasets to take advantage of grouping variable
+sea_comb<-merge(sea_chem,samp_data,by.x="row.names",by.y="sample_id")
+View(sea_comb)
+
+#Can rename the rows and remove new column, or can leave as is
+rownames(sea_comb) <- sea_comb[,1]
+head(sea_comb)
+sea_comb<-sea_comb[,-1] 
+
+#Check out what summary does now
+summary(sea_comb)
+
+# Correlations/covariances among numeric variables in
+# data frame mtcars. Use listwise deletion of missing data.
+cor(sea_comb[,c("NH4_nanoM","NO3_nanoM")], use="complete.obs", method="kendall")
+cor(sea_comb[,c("NH4_nanoM","depth")], use="complete.obs")
+cor(sea_comb[,c("NH4_nanoM","depth")], use="complete.obs",method = "spearman")
+
+#ANOVA
+#Example from https://www.scribbr.com/statistics/anova-in-r/
+NH4_anova <- aov(NH4_nanoM ~ location+depth, data = sea_comb)
+summary(NH4_anova)
+
+# Kruskal Wallis Test One Way Anova by Ranks
+kruskal.test(NH4_nanoM ~ location,data = sea_comb) 
+    # where x is numeric and A is a factor
+
+
+```
+
+
