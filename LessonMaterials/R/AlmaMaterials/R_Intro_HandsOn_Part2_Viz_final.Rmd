@@ -1,0 +1,738 @@
+---
+title: "Carpentries: R Intro PARTII Data Visualization"
+author: "Alma Parada"
+date: "10/28/2022"
+output: html_document
+---
+
+# Load packages we will be using today
+
+We could load only when we need it, but I like knowing what packages we need, so that I can install if I don't have them.
+```{r setup, echo=T, results='hide',error=F,warning=F,message=F}
+
+library(tidyverse)
+library(patchwork)
+library(readxl)
+library(ggplot2) #We will primarily work with ggplot2 today, but lots of options
+
+
+```
+
+
+# Read in data and prepare
+```{r}
+
+#Read in the data
+sea_chem<-read.table("sim_data.csv",header=T,sep=",",na.strings="NA",row.names=1)
+samp_data<-read_xlsx("sim_data.xlsx","samples")
+
+sea_comb<-merge(sea_chem,samp_data,by.x="row.names",by.y="sample_id")
+#View(sea_comb) #note that the row names are now a column, we could change this, but for dataframes it's usually better to keep this valuable information in a column
+
+
+#Create new column to group by based on the values of another
+sea_comb$NH4_stat <- ifelse(sea_comb$NH4_nanoM<20,"depleted","replete")
+unique(sea_comb$NH4_stat)
+
+
+# Check the data type and some basic stats
+str(sea_comb)
+summary(sea_comb)
+
+
+#Could also use the dplyr package (part of tidyverse) to summarize
+sea_comb %>% #start with the dataset "sea_comb", then
+  group_by(NH4_stat) %>% # group by the variable NH4_stat, then
+  count() %>% # count the number of observations, then
+  ungroup() #remove the grouping
+
+
+sea_comb %>%
+  group_by(location) %>%
+  summarise(mean_NH4 = mean(NH4_nanoM),
+            sd_NH4 = sd(NH4_nanoM),
+            mean_NO3 = mean(NO3_nanoM),
+            sd_NO3 = sd(NO3_nanoM))
+
+# you could then convert this more easily into a table and export if desired
+
+```
+
+# Exercise 1
+```{r}
+#Create a summary table of the bacterial and viral counts, include the mean  and standard error for each location and depth
+
+sea_comb %>%
+  group_by(location, depth) %>%
+  summarise(mean_Bact = mean(Bact),
+            se_Bact = sd(Bact)/sqrt(n()),
+            mean_Virus = mean(Virus),
+            se_Virus = sd(Virus)/sqrt(n()))
+
+
+```
+
+  
+# Bar Graphs, Histograms, Scatterplots
+```{r}
+#Create a simple bar graph
+ggplot(sea_comb, mapping = aes(x = NH4_stat)) +
+  geom_bar()
+#many options for customization will be available if you either call the help pages or hit tab
+
+#Modify bar chart to show percent of samples that are in each group
+bar<- ggplot(data = sea_comb, mapping = aes(x = NH4_stat)) + 
+  geom_bar(aes(y = (..count..)/sum(..count..))) + 
+  scale_y_continuous(name = "Percent", labels=scales::percent) 
+bar
+
+#Create a simple histogram
+ggplot(sea_comb, aes(x = NH4_nanoM)) +
+  geom_histogram()
+#Change the binwidth
+hist_NH4<- ggplot(sea_comb, aes(x = NH4_nanoM)) +
+  geom_histogram(binwidth = 10) # each bin covers 10nM
+
+#Create a density plot
+ggplot(sea_comb, aes(x = NH4_nanoM)) +
+  geom_density()
+
+#Histogram & density
+# Histogram with kernel density
+ggplot(sea_comb, aes(x = NH4_nanoM)) + 
+  geom_histogram(aes(y = ..density..)) +
+  geom_density()
+
+
+#Create a scatterplot
+scat_Micro <- ggplot(sea_comb,aes(x=Bact,y=Virus)) +
+            geom_point()
+scat_Micro
+
+```
+
+
+# Plotting multiple figures together
+```{r, fig.show="hold"}
+#using bultin command par() & layout() cannot be used with ggplot2
+attach(sea_comb)
+
+# figures arranged in 3 rows and 1 columns
+par(mfrow=c(3,1))
+hist(NH4_nanoM)
+hist(NO3_nanoM)
+plot(Bact,Virus)
+
+#Can change the margins of the figure
+#mar=c(b,l,t,r) or mai for inches
+
+par(mfrow=c(3,1),mar=c(2,2,2,0))
+hist(NH4_nanoM)
+hist(NO3_nanoM)
+plot(Bact,Virus)
+
+dev.off()
+
+par(mfrow=c(3,1))
+hist(NH4_nanoM)
+hist(NO3_nanoM)
+plot(Bact,Virus)
+
+par("mar")
+dev.off()
+#1 figure in row 1 and 2 figures in 2
+layout(matrix(c(1,1,2,3),nrow=2,ncol=2,byrow=T))
+hist(NH4_nanoM)
+hist(NO3_nanoM)
+plot(Bact,Virus)
+
+#2 figure in row 1 and 1 figures in 2
+layout(matrix(c(1,2,3,3),nrow=2,ncol=2,byrow=T),
+       heights=c(1,2),
+       widths=c(2,2)) # figs 1 & 2 in row 1, fig 3 in row 2
+hist(NH4_nanoM)
+hist(NO3_nanoM)
+plot(Bact,Virus)
+
+detach(sea_comb)
+
+
+#Use patchwork package to plot graphs in one figure
+(bar + hist_NH4) / scat_Micro
+
+
+```
+
+
+# Saving figures
+```{r include=FALSE}
+#Can use the "Export" button in the "Plots" tab
+
+
+# Print plots to a pdf file
+pdf(file = "sea_bar_histNH4.pdf")
+print(bar)     # Plot 1 --> in the first page of PDF
+print(hist_NH4)     # Plot 2 ---> in the second page of the PDF
+dev.off() 
+
+#Print to png
+png(file="sea_bar.png")
+print(bar)
+dev.off()
+
+#Print to eps
+postscript(file="sea_bar.eps")
+print(bar)
+dev.off()
+
+#and so on for jpg, tiff, etc.
+
+#modify dimensions and resolution
+#Print to png
+png(file="sea_bar_sized.png",
+    units = "in",width=2,height=4,res=300)
+print(bar)
+dev.off()
+
+?pdf
+pdf(file="sea_bar_sized.pdf",
+    width=2,height=4)
+print(bar)
+dev.off()
+
+#Using ggsave
+combinedPlots<-(bar + hist_NH4) / scat_Micro
+
+ggsave("combinedPlots.png",plot=combinedPlots)
+
+ggsave("combinedPlotsSized.png",plot=combinedPlots,
+       units="in",width = 5, height=8,dpi = 300)
+
+```
+
+
+
+# Color and Label Customizations
+```{r}
+#Customize our histogram
+hist_NH4 <- ggplot(sea_comb, aes(x = NH4_nanoM)) +
+            geom_histogram(binwidth = 10, fill="red") # each bin covers 10nM
+
+#Use built-in themes to further modify
+hist_NH4 + theme_classic() #Change this up and see how it affects the graph
+
+#Customize labels
+#there are different ways to change the labels and breaks
+hist_NH4 + scale_x_continuous(name = "Ammonium Concentration (nM)") +
+  scale_y_continuous(name = "Number of Samples",
+                     breaks = c(0,5,10,15,20,25)) +
+  theme_light()
+
+#Common mistake is to use the wrong scale
+#h + scale_x_continuous(name = "Ammonium Concentration (nM)") +
+ # scale_y_discrete(name = "Number of Samples",
+  #                   breaks = c(0,5,10,15,20,25))  +
+    #theme_light()
+
+#Customize a more complex figure
+comb_NH4<-ggplot(sea_comb, aes(x = NH4_nanoM)) + 
+  geom_histogram(aes(y = ..density..),
+                 binwidth = 10) +
+  geom_density()+  
+  #Next let's change the amount of space data will take up
+  scale_y_continuous(name="Density",expand=expansion(mult=c(0.01,.01))) + #come back and adjust to low end from 0 to 0.1 , 0.01
+  scale_x_continuous(name="Ammonium (NH4, nM)",expand=expansion(mult=c(0.01,0.01))) #comback and adjust the sides to 0.01, 0.01
+comb_NH4
+
+
+#Take more control over the theme of the plot
+comb_NH4 +
+  theme(panel.background = element_rect("white", "black", 2, "solid", "black"),
+         panel.grid.major = element_line(size = 0.2, linetype = 'dashed',
+                                colour = "gray"))
+
+
+#Let's add some color!
+#can use hexadecimal color codes instead of names http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+
+comb_NH4_v2 <- 
+  ggplot(sea_comb, aes(x = NH4_nanoM)) + 
+  geom_histogram(aes(y = ..density..),
+                 binwidth = 10,
+                 colour="#999999", fill="#FFFFFF") + #changes the color of the line and the fill of the bars
+  geom_density(lwd = 1,
+               linetype = 2,
+               colour = 2) +  #Changes the density line width, line type, and color
+ 
+  scale_y_continuous(name="Density",expand=expansion(mult=c(0.01,.01))) +
+  scale_x_continuous(name="Ammonium (NH4, nM)",expand=expansion(mult=c(0.01,0.01))) +
+  
+  theme_classic(base_size = 16) #modifies a pre-existing theme
+
+comb_NH4_v2
+
+#can use hexadecimal color codes instead of names http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+
+```
+
+
+# Exercise 2
+```{r}
+#1 change the bar colors of the bar chart to a blue of your choice using it's hex code
+
+#2 change the theme of the newly colored bar chart
+
+#3 Change the x & y labels of the chart in #2
+ 
+#4 plot the new bar chart and the original in one figure and save it
+
+
+new<- ggplot(sea_comb, mapping = aes(x = NH4_stat)) +
+  geom_bar(fill="#6699CC")+
+  theme_bw() +
+  xlab("Nitrogen Status") +
+  scale_y_continuous(name="# of Samples")
+
+comp_bars<- bar + new
+
+ggsave("comp_bar.png",comp_bars,dpi=100)
+```
+
+
+# Customize graphs by grouping variables: color and point shapes
+```{r}
+#Need to prepare grouping variables, typically need to tell ggplot2 a variable is a factor
+unique(sea_comb$location) #note output
+sea_comb$location<-as.factor(sea_comb$location)
+unique(sea_comb$location) #note order of levels
+
+scat_Nit2<-ggplot(sea_comb,aes(x=NO3_nanoM,y=NH4_nanoM,col=location)) + #color by location
+            geom_point()
+scat_Nit2 #uses default rainbow colors
+          #order of location in legend could better represent our collection strategy
+
+#Indicate the order the factors should be in
+sea_comb$location<-factor(sea_comb$location,levels=c("coastal","offshore","openOcean","gyre"))
+scat_Nit3<-ggplot(sea_comb,aes(x=NO3_nanoM,y=NH4_nanoM,col=location)) +
+            geom_point()+
+              scale_color_manual(values = c("#ca7dcc",
+                                "#1b98e0",
+                                "#353436",
+                                "darkred")) #indicate the colors each level should use
+
+scat_Nit3
+
+#Change point shape to identify a second grouping variable (depth)
+scat_Nit4<-ggplot(sea_comb,aes(x=NO3_nanoM,y=NH4_nanoM,col=location)) +
+            geom_point(aes(shape=as.factor(depth),color=location),size=2)+ #note I changed the depth to a factor in place
+              scale_shape_manual(values=c(3,16)) +
+              scale_color_manual(values = c("#ca7dcc",
+                                "#1b98e0",
+                                "#353436",
+                                "darkred")) +
+          theme_bw()
+
+#the legend labels cold be better!
+scat_Nit4 + labs(color = "Location",shape="Water depth (m)") # Show them a new thing, change legend labels
+
+#we could also move the legend
+scat_Nit4 + labs(color = "Location",shape="Water depth (m)") +
+  theme(legend.position = "top") #values allowed, left, top, right, bottom
+
+scat_Nit4 + labs(color = "Location",shape="Water depth (m)") +
+  theme(legend.position = c(0.7,0.7)) 
+#give coordinates, values 0-1, 
+#c(0,0) corresponds to the “bottom left”
+#c(1,1) corresponds to the “top right” position.
+
+
+scat_Nit4 + labs(color = "Location",shape="Water depth (m)") +
+  theme(legend.position = c(0.7,0.7), legend.box="horizontal") #horizontally splits the legends
+
+
+scat_Nit4 + labs(color = "Location",shape="Water depth (m)") +
+  theme(legend.position = c(0.7,0.7), legend.box="horizontal") +
+  guides(color=guide_legend(order=2),
+         shape=guide_legend(order=1)) #change the order of each guide
+
+
+```
+
+
+# Exercise 3
+```{r}
+#Modify the dataset and code to produce a NO3 x NH4 scatterplot that does the following
+ 
+  #1 Use color to identify NH4 replete samples
+  #2 Use shape to identify NO3 replete samples where NO3 > 2microMolar
+  #3 Improve the labels for the graph
+  #4 Choose a different theme for the graph
+
+
+#First need to create a new grouping variable
+sea_comb$NO3_stat<-ifelse(sea_comb$NO3_nanoM>2000,"replete","depleted")
+
+#Create a ggplot scatter plot, x =NO3, y=NH4, color by NH4_stat, but the shape is the new NO3_stat variable
+p<-ggplot(sea_comb,aes(x=NO3_nanoM,y=NH4_nanoM,col=NH4_stat)) +
+            geom_point(aes(shape=NO3_stat,color=NH4_stat),size=2)+
+              scale_shape_manual(values=c(17,16)) +
+              scale_color_manual(values = c("red",
+                                "blue"))
+
+p + xlab("Nitrate (nM)") +
+  ylab("Ammonium (nM)") +
+  theme_light(base_rect_size = 2) +
+  labs(color = "Ammonium",shape="Nitrate") +
+  theme( legend.position = c(0.7,0.7), legend.box="horizontal", 
+         legend.background = element_rect(size=1,linetype="solid",color="black"))
+
+```
+
+# Detecting patterns in scatterplots
+```{r}
+ggplot(sea_comb, aes(x = Bact, y = Virus)) +
+  geom_point() +
+  geom_smooth(method = "lm") #draws a linear regression line, by default includes confidence envelope
+
+#Indicate groups within the scatterplot
+ggplot(sea_comb, aes(x = Bact, y = Virus, color=as.factor(depth))) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+    scale_colour_discrete(name = "Water Depth (m)",
+                      labels = c("10", "50"))
+
+#Customize the colors using built in pallettes
+ggplot(sea_comb, aes(x = Bact, y = Virus,color=as.factor(depth))) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  scale_color_brewer(palette = "Set1",
+                     name = "Water Depth (m)",
+                      labels = c("10", "50")) # http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+
+
+```
+
+# Exercise 4
+```{r}
+#create a scatterplot of Bacteria and Virus counts, and
+#1 group the samples by location
+#2 use the scale_* functions to rename the axes and customize the group colors
+#3 fit a line to each group and remove the confidence envelope
+
+unique(sea_comb$location)
+
+ggplot(sea_comb, aes(x = Bact, y = Virus,color=location)) +
+  geom_point() +
+  geom_smooth(method=lm,se=F) +
+  scale_color_brewer(palette = "Dark2",
+                     name = "Location",
+                      labels = c("Coastal", "Off Shore","Open Ocean", "Gyre")) 
+
+#4 what could we change to color by location but fit a line to all data points or by depth
+ggplot(sea_comb, aes(x = Bact, y = Virus)) +
+  geom_point(aes(color=location)) +
+  geom_smooth(method=lm,se=F) +
+  scale_color_brewer(palette = "Dark2",
+                     name = "Location",
+                      labels = c("Coastal", "Off Shore","Open Ocean", "Gyre")) 
+
+
+ggplot(sea_comb, aes(x = Bact, y = Virus,linetype=as.factor(depth))) +
+  geom_point(aes(color=location)) + 
+  geom_smooth(method = 'lm',color="black")
+
+#Extra
+#to get the formula and r2 need to do some work, https://stackoverflow.com/questions/7549694/add-regression-line-equation-and-r2-on-graph
+BvV<-lm(Bact~Virus,sea_comb)
+summary(BvV)
+
+lm_eqn <- function(df){
+    m <- lm(Bact ~ Virus, df);
+    eq <- substitute(italic(y) == a + b %.% italic(x)*","~~italic(r)^2~"="~r2, 
+         list(a = format(unname(coef(m)[1]), digits = 2),
+              b = format(unname(coef(m)[2]), digits = 2),
+             r2 = format(summary(m)$r.squared, digits = 3)))
+    as.character(as.expression(eq));
+}
+
+p<-ggplot(sea_comb, aes(x = Bact, y = Virus)) +
+  geom_point(aes(color=location)) +
+  geom_smooth(method=lm,se=F) +
+  scale_color_brewer(palette = "Dark2",
+                     name = "Location",
+                      labels = c("Coastal", "Off Shore","Open Ocean", "Gyre")) 
+
+p + geom_text(x=1e6,y=3.5e7,label=lm_eqn(sea_comb),parse=T)
+
+```
+
+
+# Transforming data
+Our data is currently in wide format
+
+    - row = participant or sample, column = variable
+    - gplot and computers don't really like this human readable format
+
+We can transform (reshape) our data to long-format
+
+    - row = observation 
+    - each sample will have multiple rows, one for each observation
+    - each row is unique when looking at the combination of each measurement
+    - each variable that shares an axis will typically be in the same column
+
+```{r,results='hide'}
+#show how to "hide" R markdown results
+# many ways to reshape data from wide <-> long
+head(sea_comb)
+
+#reshape {stats}
+reshape(sea_comb,idvar="Row.names",
+        varying=c("NH4_nanoM","NO3_nanoM"),v.name=c("Conc_nM"),
+        times=c("NH4_nanoM","NO3_nanoM"),
+        direction="long")
+
+#tidyverse, pivot_longer
+sea_long<-pivot_longer(sea_comb,
+             cols = c("NH4_nanoM","NO3_nanoM"),
+             names_to="Nitrogen",
+             values_to="Conc_nM")
+
+head(sea_long)
+
+
+#modify column values
+sea_long$Nitrogen<-vapply(strsplit(sea_long$Nitrogen,"_"), `[`, 1, FUN.VALUE=character(1))
+head(sea_long)
+
+```
+
+
+# Visualizing our reshaped data
+```{r,echo=T,error =TRUE,eval=FALSE}
+
+#Splitting figures using grouping variables with facet_grid
+ggplot(sea_long, aes(y = Conc_nM,x=location)) +
+  geom_point() +
+  facet_grid(~Nitrogen)
+
+ggplot(sea_long, aes(x = Conc_nM,y=depth) )+
+  geom_point() +
+  facet_grid(Nitrogen~location) + # show an example of change the formula
+  #facet_grid(~Nitrogen +location)
+  scale_y_reverse() 
+
+ggplot(sea_long, aes(y = Conc_nM,x=as.factor(depth))) +
+  geom_point() +
+  facet_grid(Nitrogen~location, scales="free_y")
+ 
+  
+#Splitting figures using grouping variables with facet_wrap
+ggplot(sea_long, aes(y = Conc_nM,x=as.factor(depth))) +
+  geom_point() +
+  facet_wrap(Nitrogen~location) +
+  scale_y_reverse() 
+
+ggplot(sea_long, aes(y = Conc_nM,x=as.factor(depth))) +
+  geom_point() +
+  facet_wrap(~location + Nitrogen, ncol = 2) +
+  scale_y_reverse() 
+
+```
+
+# Exercise 5
+```{r}
+#Create a facet_grid plot that does the following:
+
+#1 Has concentration on the y-axis
+#2 Is faceted by sample location
+#3 Has clearly labeled axes
+#4 An improved theme
+#5 Different colors for each sample depth
+
+sea_long$Nitrogen<-factor(sea_long$Nitrogen,levels=c("NO3", "NH4"))
+
+# New facet label names for dose variable
+loc.labs <- c("Coastal", "Offshore", "Open Ocean", "Gyre")
+names(loc.labs) <- c("coastal", "offshore", "openOcean","gyre")
+
+
+ggplot(sea_long, aes(y = Conc_nM,x=Nitrogen)) +
+  geom_point(aes(col=as.factor(depth))) +
+  facet_grid(~location,
+              labeller = labeller(location = loc.labs)) +
+  xlab("Nitrogen Species") + ylab("concentration (nM)") +
+  theme_bw() + labs(color = "Water Depth (m)") +
+  theme(strip.background =element_rect(fill="white"))+
+  theme(strip.text = element_text(colour = 'Black',face = "bold"))
+  
+```
+
+# Create overlapping data figures with reshaped data
+```{r}
+#Compare the distribution of data between groups
+ggplot(sea_long, aes(x = Conc_nM, fill = Nitrogen)) +
+  geom_density(alpha = 0.75)+
+  scale_x_continuous(name = "Nitrogen Species (nM)") +
+  scale_fill_discrete(name = "Nitrogen Species",
+                      labels = c("NO3", "NH4")) #be careful here because you have now reordered the levels
+
+#Customize the colors
+cols<-c("red","blue")
+#cols <- c("#F76D5E", "#72D8FF")
+
+ggplot(sea_long, aes(x = Conc_nM, fill = Nitrogen)) +
+  geom_density(alpha = 0.75)+
+  scale_x_continuous(name = "Nitrogen Species (nM)") +
+  scale_fill_discrete(name = "Nitrogen Species",
+                      labels = c("NO3", "NH4")) +
+  scale_fill_manual(values=cols)
+
+ggplot(sea_long, aes(x = Conc_nM, fill = Nitrogen)) +
+  geom_density(alpha = 0.75)+
+  scale_x_continuous(name = "Nitrogen Species (nM)",expand=expansion(mult=c(0.01,.01))) +
+  scale_y_continuous(expand=expansion(mult=c(0.01,.01)))+
+  scale_fill_discrete(name = "Nitrogen Species",
+                      labels = c("Nitrate", "Ammonium")) +
+  scale_fill_manual(values=c("black","lightgray")) +
+  theme_bw()
+
+#Focus on one variable
+ggplot(subset(sea_long,Nitrogen == "NH4"), aes(x = Conc_nM, fill = location)) + #could also create a new subsetted dataframe
+  geom_density(alpha = 0.75)+
+  scale_x_continuous(name = "Ammonium Concentration (nM)",expand=expansion(mult=c(0.01,.01))) +
+  scale_y_continuous(expand=expansion(mult=c(0.01,.01)))+
+  scale_fill_discrete(name = "Location",
+                      labels = c("Coastal", "Off Shore","Open Ocean","Gyre")) +
+  theme_bw()
+
+
+
+```
+
+# Specify axis breaks
+```{r}
+#could specify the breaks we want exactly
+ggplot(subset(sea_long,Nitrogen == "NH4"), aes(x = Conc_nM, fill = location)) + #could also create a new subsetted dataframe
+  geom_density(alpha = 0.75)+
+  scale_x_continuous(name = "Ammonium Concentration (nM)",expand=expansion(mult=c(0.01,.01)),
+                     breaks=c(0,50,100,150,200,250,300,350,400,450)) +
+  scale_y_continuous(expand=expansion(mult=c(0.01,.01)))+
+  scale_fill_discrete(name = "Location",
+                      labels = c("Coastal", "Off Shore","Open Ocean","Gyre")) +
+  theme_bw()
+
+#more efficiently, we could use the sequence function, seq()
+ggplot(subset(sea_long,Nitrogen == "NH4"), aes(x = Conc_nM, fill = location)) + #could also create a new subsetted dataframe
+  geom_density(alpha = 0.75)+
+  scale_x_continuous(name = "Ammonium Concentration (nM)",expand=expansion(mult=c(0.01,.01)),
+                     breaks=seq(0,450,by=50)) + #notice behaviour if we change past the natural x-limits
+  scale_y_continuous(expand=expansion(mult=c(0.01,.01)))+
+  scale_fill_discrete(name = "Location",
+                      labels = c("Coastal", "Off Shore","Open Ocean","Gyre")) +
+  theme_bw()
+
+ggplot(subset(sea_long,Nitrogen == "NH4"), aes(x = Conc_nM, fill = location)) + #could also create a new subsetted dataframe
+  geom_density(alpha = 0.75)+
+  scale_x_continuous(name = "Ammonium Concentration (nM)",expand=expansion(mult=c(0.01,.01)), limits = c(0,500),
+                     breaks=seq(0,500,by=50)) + #notice behaviour if we change past the natural x-limits
+  scale_y_continuous(expand=expansion(mult=c(0.01,.01)))+
+  scale_fill_discrete(name = "Location",
+                      labels = c("Coastal", "Off Shore","Open Ocean","Gyre")) +
+  theme_bw()
+#check the range to make sure we are capturing all the data
+range(subset(sea_long,Nitrogen == "NH4")$Conc_nM)
+
+```
+
+# Exercise 6
+```{r}
+#Update your sea_long dataset to include the bacteria and viral counts in long format
+#Create a facetted plot of the microbial counts by location , colored by depth, and has improved labels and colors
+sea_long2<-pivot_longer(sea_long,
+             cols = c("Bact","Virus"),
+             names_to="Microbe",
+             values_to="Counts")
+
+head(sea_long2)
+
+
+ggplot(sea_long2, aes(y = Counts,x=Microbe)) +
+  geom_point(aes(col=as.factor(depth))) +
+  facet_grid(~location,
+              labeller = labeller(location = loc.labs)) +
+  xlab("Microorganism") + ylab("Abundance (particle/ml)") +
+  scale_color_brewer(palette = "Set2")+
+  theme_bw() + labs(color = "Water Depth (m)") +
+  theme(strip.background =element_rect(fill="white"))+
+  theme(strip.text = element_text(colour = 'Black',face = "bold"))
+
+
+#Extra if we want to improve the look of the points to not lay on top of each other
+ggplot(sea_long2, aes(y = Counts,x=Microbe)) +
+  geom_jitter(aes(col=as.factor(depth))) +
+  facet_grid(~location,
+              labeller = labeller(location = loc.labs)) +
+  xlab("Microorganism") + ylab("Abundance (particle/ml)") +
+  scale_color_brewer(palette = "Set2")+
+  theme_bw() + labs(color = "Water Depth (m)") +
+  theme(strip.background =element_rect(fill="white"))+
+  theme(strip.text = element_text(colour = 'Black',face = "bold"))
+
+#Want each microbe on own scale
+ggplot(sea_long2, aes(y = Counts,x=location)) +
+  geom_jitter(aes(col=as.factor(depth))) +
+  facet_wrap(~Microbe,
+              labeller = labeller(location = loc.labs),scales = "free_y") +
+  xlab("Location") + ylab("Abundance (particle/ml)") +
+  scale_color_brewer(palette = "Set2")+
+  theme_bw() + labs(color = "Water Depth (m)") +
+  theme(strip.background =element_rect(fill="white"))+
+  theme(strip.text = element_text(colour = 'Black',face = "bold"))
+
+```
+
+# Boxplots & violin plots
+```{r}
+ggplot(sea_long2, aes(x = location, y = Counts)) +
+  facet_wrap(~Microbe,scales="free_y")+
+  geom_boxplot()
+
+ggplot(sea_long2, aes(x = location, y = Counts)) +
+  facet_wrap(~Microbe,scales="free_y")+
+  geom_violin()
+
+#can combine the two
+ggplot(sea_long2, aes(x = location, y = Counts)) +
+  facet_wrap(~Microbe,scales="free_y")+
+  geom_boxplot() +
+  geom_violin(alpha=0.2)
+
+ggplot(sea_long2, aes(x = location, y = Counts)) +
+  facet_wrap(~Microbe,scales="free_y")+
+  geom_violin() +
+  geom_boxplot(alpha=0.2, width=0.2)
+
+```
+
+#Exercise 7
+```{r}
+#Improve the labels, colors , and theme of the combined box & violin plot
+bp<-ggplot(sea_long2, aes(x = location, y = Counts,fill=location)) +
+  facet_wrap(~Microbe,scales="free_y")+
+  geom_violin(alpha=0.25) +
+  geom_boxplot(alpha=0.75, width=0.2)
+
+bp +  scale_fill_brewer(palette = "Dark2",name = "Location",
+                      labels = c("Coastal", "Off Shore","Open Ocean","Gyre")) +
+  theme_bw() + labs(color = "Location") +
+  theme(strip.background =element_rect(fill="white"))+
+  theme(strip.text = element_text(colour = 'Black',face = "bold")) +
+  scale_x_discrete(name = "Location",
+                      labels = c("Coastal", "Off Shore","Open Ocean","Gyre"))+
+  scale_y_continuous(name="Abundance (cell/ml)")+
+  guides(x=guide_axis(angle=45))
+
+  #if i waned to change the y-axis numbers https://stackoverflow.com/questions/10762287/how-can-i-format-axis-labels-with-exponents-with-ggplot2-and-scales
+```
+
+
